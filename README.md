@@ -21,6 +21,7 @@ This repository is designed to recreate my desktop on any workstation.
 * vim
 * ansible
 * VirtualBox CLI tools
+* vagrant
 
 ## Sources
 https://github.com/mariojmdavid/nextcloud-client/blob/master/Dockerfile
