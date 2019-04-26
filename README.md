@@ -15,14 +15,12 @@ This repository is designed to recreate my desktop on any workstation.
 * Nextcloud Client
 
 ### Tools (on Terminal start or on terminal command as container):
-
-...* gcloud SDK
-
-** git
-** nano
-** vim
-** ansible
-** VirtualBox CLI tools
+* gcloud SDK
+* git
+* nano
+* vim
+* ansible
+* VirtualBox CLI tools
 
 ## Sources
 https://github.com/mariojmdavid/nextcloud-client/blob/master/Dockerfile
