@@ -15,7 +15,9 @@ This repository is designed to recreate my desktop on any workstation.
 * Nextcloud Client
 
 ### Tools (on Terminal start or on terminal command as container):
-** gcloud SDK
+
+...* gcloud SDK
+
 ** git
 ** nano
 ** vim
