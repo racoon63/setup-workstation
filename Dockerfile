@@ -1,11 +1,6 @@
 FROM google/cloud-sdk:latest
 LABEL maintainer='Patrick Lubach <p.lubach@goreply.de>'
 
-# ssh variables
-#ARG ssh_prv_key
-#ARG ssh_pub_key
-#ENV SSH_AGENT_PID='eval "$(ssh-agent -s)"'
-
 # Install needed packages
 RUN apt update -y && \
     apt dist-upgrade -y && \
