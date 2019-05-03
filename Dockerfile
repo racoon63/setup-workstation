@@ -2,8 +2,9 @@ FROM google/cloud-sdk:latest
 LABEL maintainer='p.lubach@goreply.de'
 
 # ssh variables
-ARG ssh_prv_key
-ARG ssh_pub_key
+#ARG ssh_prv_key
+#ARG ssh_pub_key
+#ENV SSH_AGENT_PID='eval "$(ssh-agent -s)"'
 
 # Install needed packages
 RUN apt update -y && \
@@ -15,13 +16,15 @@ RUN apt update -y && \
                     curl \
                     vim \
                     python \
-                    openssh-client
+                    openssh-client \
+                    bash-completion
 RUN pip install ansible
-RUN curl -O https://releases.hashicorp.com/vagrant/2.2.3/vagrant_2.2.3_x86_64.deb && \
-    apt install -y ./vagrant_2.2.3_x86_64.deb
-RUN mkdir -p /root/.ssh
-RUN echo $ssh_prv_key > /root/.ssh/id_ed25519
-RUN echo $ssh_pub_key > /root/.ssh/id_ed25519.pub
-RUN chmod 0600 /root/.ssh/id_ed25519
+#RUN wget https://releases.hashicorp.com/vagrant/2.2.3/vagrant_2.2.3_x86_64.deb -o /tmp/vagrant_2.2.3_x86_64.deb && \
+#    apt install -y /tmp/vagrant_2.2.3_x86_64.deb
 RUN mkdir -p /github
-CMD /bin/bash
+RUN echo 'alias ll="ls -l"' >> ~/.bashrc
+
+COPY prepare-workstation.sh /tmp
+
+ENTRYPOINT [ "/bin/bash" ]
+CMD [ "/tmp/prepare-workstation.sh" ]
