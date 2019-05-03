@@ -1,5 +1,5 @@
 FROM google/cloud-sdk:latest
-LABEL maintainer='p.lubach@goreply.de'
+LABEL maintainer='Patrick Lubach <p.lubach@goreply.de>'
 
 # ssh variables
 #ARG ssh_prv_key
