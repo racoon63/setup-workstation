@@ -16,7 +16,13 @@ echo "### Cloning repositories  ..."
 cd /github
 git clone git@github.com:racoon63/kubernetes.git
 git clone git@github.com:racoon63/setup-workstation.git
+
+cd /gitlab
+git clone git@gitlab.com:p.lubach/gce-vpn-gateway.git
 cd ~
+
+echo "### Starting gcloud config init ..."
+gcloud init
 
 echo "### Finished! Dropping you into shell ..."
 bash
