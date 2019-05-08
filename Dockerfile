@@ -33,6 +33,7 @@ RUN mv ./kubectl /usr/local/bin/kubectl
 #RUN wget https://releases.hashicorp.com/vagrant/2.2.3/vagrant_2.2.3_x86_64.deb -o /tmp/vagrant_2.2.3_x86_64.deb && \
 #    apt install -y /tmp/vagrant_2.2.3_x86_64.deb
 RUN mkdir -p /github
+RUN mkdir -p /gitlab
 RUN echo 'alias ll="ls -l"' >> ~/.bashrc
 
 COPY prepare-workstation.sh /tmp
