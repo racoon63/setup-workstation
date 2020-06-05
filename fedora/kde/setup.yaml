@@ -1,0 +1,10 @@
+# Usage:
+# ansible-playbook setup.yaml --ask-become-pass
+---
+- name: Setup Fedora workstation
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  tasks:
+    - import_role:
+        name: terraform
