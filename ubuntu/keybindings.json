@@ -1,0 +1,48 @@
+// This are additional options that can be added to the default user settings.json in
+// $HOME/.config/Code/User/keybindings.json
+// Place your key bindings in this file to override the defaultsauto[]
+[
+    {
+        "key": "alt+tab",
+        "command": "workbench.action.quickSwitchWindow"
+    },
+    {
+        "key": "ctrl+left",
+        "command": "workbench.action.navigateLeft"
+    },
+    {
+        "key": "ctrl+right",
+        "command": "workbench.action.navigateRight"
+    },
+    {
+        "key": "ctrl+up",
+        "command": "workbench.action.navigateUp"
+    },
+    {
+        "key": "ctrl+down",
+        "command": "workbench.action.navigateDown"
+    },
+    {
+        "key": "cmd+t",
+        "command": "workbench.action.terminal.focus"
+    },
+    {
+        "key": "cmd+e",
+        "command": "workbench.action.focusActiveEditorGroup"
+    },
+    {
+        "key": "cmd+r",
+        "command": "editor.action.startFindReplaceAction"
+    },
+    {
+        "key": "alt+cmd+f",
+        "command": "-editor.action.startFindReplaceAction"
+    },
+    {
+        "key": "cmd+k",
+        "command": "editor.action.addCommentLine"
+    },{
+        "key": "cmd+shift+k",
+        "command": "editor.action.removeCommentLine"
+    }
+]

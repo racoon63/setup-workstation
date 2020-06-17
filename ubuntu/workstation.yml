@@ -1,0 +1,173 @@
+# Usage:
+# ansible-playbook -i 'localhost,' workstation.yml --ask-become-pass 2>&1 | tee -a provision.log
+---
+- name: Bootstrap workstation
+  gather_facts: no
+  connection: local
+  hosts: 127.0.0.1
+  tasks:
+    
+    - name: Install general packages
+      become: yes
+      apt:
+        state: present
+        update_cache: yes
+        name:
+          - git
+          - wget
+          - vim
+          - curl
+          - aptitude
+          - mlocate
+          - keepass2
+
+# ================== Google Chrome ================== #
+
+    - name: Install Google Chrome browser repository key
+      become: yes
+      apt_key:
+        url: https://dl.google.com/linux/linux_signing_key.pub
+        state: present
+
+    - name: Add Google Chrome browser repository to sources list
+      become: yes
+      apt_repository:
+        repo: deb http://dl.google.com/linux/chrome/deb/ stable main
+        state: present
+        filename: google-chrome
+
+    - name: Install Google Chrome browser
+      become: yes
+      apt:
+        state: present
+        update_cache: yes
+        name:
+          - google-chrome-stable
+
+# ================== Google Cloud SDK ================== #
+
+    - name: Add the Cloud SDK distribution URI as a package source
+      become: yes
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+        state: present
+
+    - name: Add Google Cloud SDK repository to sources list
+      become: yes
+      apt_repository:
+        repo: deb http://packages.cloud.google.com/apt cloud-sdk main
+        state: present
+        filename: google-cloud-sdk
+
+    - name: Install Google Cloud SDK
+      become: yes
+      apt:
+        state: present
+        update_cache: yes
+        name:
+          - google-cloud-sdk
+
+# ================== Terraform ================== #
+
+    - name: Install jmespath
+      pip:
+        name: jmespath
+        state: present
+        extra_args: --user
+    
+    - name: Get latest terraform version
+      uri:
+        url: 'https://checkpoint-api.hashicorp.com/v1/check/terraform'
+        method: GET
+        status_code: 200
+        timeout: 10
+      register: release
+
+    - set_fact:
+        version: "{{ release.json | json_query('current_version') }}"
+
+    - name: Create /usr/local/bin if directory does not exist
+      become: yes
+      file:
+        path: /usr/local/bin
+        state: directory
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Install terraform
+      become: yes
+      unarchive:
+        src: 'https://releases.hashicorp.com/terraform/{{ version }}/terraform_{{ version }}_linux_amd64.zip'
+        remote_src: yes
+        dest: /usr/local/bin
+        owner: root
+        group: root
+        mode: '0755'
+
+# ================== zsh (oh my zsh) ================== #
+
+    - name: Installing zsh
+      become: yes
+      apt: 
+        name: zsh
+        state: latest
+      register: installation
+
+    - name: Check if .zshrc exists
+      stat:
+        path: ~/.zshrc
+      register: stat_rc_result
+
+    - name: Check if .oh-my-zsh exists
+      stat:
+        path: ~/.oh-my-zsh
+      register: stat_oh_my_zsh_result
+
+    - name: Cloning  oh-my-zsh
+      git:
+        repo=https://github.com/robbyrussell/oh-my-zsh
+        dest=~/.oh-my-zsh
+      when: not stat_oh_my_zsh_result.stat.exists
+
+    - name: Creating new ~/.zshrc
+      copy:
+        src=~/.oh-my-zsh/templates/zshrc.zsh-template
+        dest=~/.zshrc
+      when: not stat_rc_result.stat.exists
+
+    - debug:
+        msg: Sorry but you have to configure zsh by your own ¯\_(ツ)_/¯
+
+# ================== Powerline fonts for zsh (oh my zsh) ================== #
+
+    - name: Check if /tmp/fonts exists
+      stat:
+        path: /tmp/fonts
+      register: stat_fonts_result
+
+    - name: Cloning fonts repository
+      git:
+        repo=https://github.com/powerline/fonts.git
+        dest=/tmp/fonts
+      when: not stat_fonts_result.stat.exists
+
+    - name: Install powerline fonts
+      command: /tmp/fonts/install.sh
+
+# ================== Latte-Dock ================== #
+
+    - name: Installing latte-dock
+      become: yes
+      apt: 
+        name: latte-dock
+        state: present
+
+# ================== Snaps ================== #
+
+    - name: Install snaps
+      become: yes
+      snap:
+        name:
+          - spotify
+          - discord

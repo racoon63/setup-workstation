@@ -1,0 +1,8 @@
+// This are additional options that can be added to the default user settings.json in
+// $HOME/.config/Code/User/settings.json
+{
+    "editor.rulers": [80,100],
+
+    "terminal.integrated.shell.linux": "/bin/zsh",
+    "terminal.integrated.fontFamily": "Source Code Pro for Powerline"
+}
