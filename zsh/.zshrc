@@ -17,11 +17,12 @@ ENABLE_CORRECTION="true"
 
 plugins=(   
             command-not-found
-            docker 
+            docker
             docker-compose
-            git 
-            sudo 
-            vscode 
+            git
+            golang
+            sudo
+            vscode
             z
             # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
             zsh-autosuggestions
