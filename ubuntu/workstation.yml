@@ -2,7 +2,7 @@
 # ansible-playbook -i 'localhost,' workstation.yml --ask-become-pass 2>&1 | tee -a provision.log
 ---
 - name: Bootstrap workstation
-  gather_facts: no
+  gather_facts: yes
   connection: local
   hosts: 127.0.0.1
   tasks:
@@ -155,13 +155,59 @@
     - name: Install powerline fonts
       command: /tmp/fonts/install.sh
 
-# ================== Latte-Dock ================== #
+# ================== kubectl ================== #
 
-    - name: Installing latte-dock
+    - name: Install kubectl repository key
       become: yes
-      apt: 
-        name: latte-dock
+      apt_key:
+        url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
         state: present
+
+    - name: Add kubectl repository to sources list
+      become: yes
+      apt_repository:
+        repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
+        state: present
+        filename: kubernetes.list
+
+    - name: Install kubectl
+      become: yes
+      apt:
+        state: present
+        update_cache: yes
+        name:
+          - kubectl
+
+# ================== Docker ================== #
+
+    - name: Install Docker
+      become: yes
+      apt:
+        state: present
+        update_cache: yes
+        name:
+          - docker.io
+          - docker-compose
+          - docker-doc
+
+    - name: Enable and start docker daemon
+      become: yes
+      systemd:
+        name: docker
+        enabled: yes
+        state: started
+    
+    - name: Setting username variable
+      set_fact:
+        username: "{{ ansible_user_id }}"
+
+    - name: Add user to docker group
+      become: yes
+      user:
+        append: yes
+        groups: 
+          - docker
+        name: "{{ username }}"
 
 # ================== Snaps ================== #
 
@@ -170,4 +216,31 @@
       snap:
         name:
           - spotify
-          - discord
+
+# ================== Golang ================== #
+
+    - name: Remove go binary
+      become: yes
+      file:
+        path: /usr/local/go
+        state: absent
+
+    - name: Download go
+      get_url:
+        url: https://golang.org/dl/go1.15.3.linux-amd64.tar.gz
+        dest: /tmp/go1.15.3.linux-amd64.tar.gz
+        mode: 0440
+
+    - name: Extract go archive into /usr/local
+      become: yes
+      unarchive:
+        src: /tmp/go1.15.3.linux-amd64.tar.gz
+        dest: /usr/local
+        remote_src: yes
+
+    - name: Add go to PATH
+      become: yes
+      lineinfile:
+        path: "/home/{{username}}/.zshrc"
+        state: present
+        line: export PATH=$PATH:/usr/local/go/bin
