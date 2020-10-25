@@ -21,7 +21,8 @@ plugins=(
             docker-compose
             git
             golang
-            sudo
+            # sudo
+            thefuck
             vscode
             z
             # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
@@ -36,3 +37,4 @@ source $ZSH/oh-my-zsh.sh
 alias zshconfig="mate ~/.zshrc"
 alias ohmyzsh="mate ~/.oh-my-zsh"
 alias myip="curl http://ipecho.net/plain; echo"
+alias pip="pip3"
