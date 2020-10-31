@@ -3,7 +3,7 @@
 # Usage:
 # wget -q -O - https://raw.githubusercontent.com/racoon63/setup-workstation/master/ubuntu/install.sh | bash
 
-set -e
+set -ex
 
 # Update and upgrade workstation
 sudo apt update
@@ -12,7 +12,8 @@ sudo apt autoremove -y
 
 # Install python3 to install ansible in the next step
 sudo apt install -y python3 \
-                    python3-pip
+                    python3-pip \
+                    git
 
 pip3 install --user ansible
 
