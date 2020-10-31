@@ -47,7 +47,7 @@
 
 # ================== Google Cloud SDK ================== #
 
-    - name: Add the Cloud SDK distribution URI as a package source
+    - name: Add the Cloud SDK repository key
       become: yes
       apt_key:
         url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
