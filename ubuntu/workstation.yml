@@ -13,13 +13,14 @@
         state: present
         update_cache: yes
         name:
-          - git
-          - wget
-          - vim
-          - curl
           - aptitude
-          - mlocate
+          - curl
+          - git
+          - jq
           - keepass2
+          - mlocate
+          - vim
+          - wget
 
 # ================== Google Chrome ================== #
 
@@ -83,10 +84,11 @@
         timeout: 10
       register: release
 
-    - set_fact:
+    - name: Getting latest terraform version
+      set_fact:
         version: "{{ release.json | json_query('current_version') }}"
 
-    - name: Create /usr/local/bin if directory does not exist
+    - name: Create /usr/local/bin
       become: yes
       file:
         path: /usr/local/bin
@@ -124,6 +126,9 @@
         dest: "/home/{{ ansible_user_id }}/.zshrc"
         mode: 0644
 
+    - name: Set zsh as default shell
+      command: chsh -s $(which zsh)
+
 # ================== Powerline fonts for zsh (oh my zsh) ================== #
 
     - name: Install Powerline Fonts
@@ -132,7 +137,7 @@
         state: present
         update_cache: yes
         name:
-          - kubectl
+          - fonts-powerline
 
 # ================== kubectl ================== #
 
