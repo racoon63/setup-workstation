@@ -244,3 +244,34 @@
         path: "/home/{{username}}/.zshrc"
         state: present
         line: export PATH=$PATH:/usr/local/go/bin
+
+# ================== Helm ================== #
+
+    - name: Install helm repository key
+      become: yes
+      apt_key:
+        url: https://baltocdn.com/helm/signing.asc
+        state: present
+
+    - name: Install secure apt transport
+      become: yes
+      apt:
+        state: present
+        update_cache: yes
+        name:
+          - apt-transport-https
+
+    - name: Add helm repository to sources list
+      become: yes
+      apt_repository:
+        repo: deb https://baltocdn.com/helm/stable/debian/ all main
+        state: present
+        filename: helm
+
+    - name: Install helm
+      become: yes
+      apt:
+        state: present
+        update_cache: yes
+        name:
+          - helm
