@@ -126,8 +126,15 @@
         dest: "/home/{{ ansible_user_id }}/.zshrc"
         mode: 0644
 
-    - name: Set zsh as default shell
-      command: chsh -s $(which zsh)
+    - name: Get zsh path
+      command: which zsh
+      register: zsh_path
+
+    - name: Set user shell
+      become: yes
+      user:
+        name: "{{ ansible_user_id }}"
+        shell: "{{ zsh_path.stdout }}"
 
 # ================== Powerline fonts for zsh (oh my zsh) ================== #
 
