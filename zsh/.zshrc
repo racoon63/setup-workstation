@@ -1,8 +1,11 @@
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/racoon/.local/bin
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:$HOME/.local/bin
+
+# Exports
 export PATH=$PATH:/usr/local/go/bin
+export GOPATH=$HOME/go
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/racoon/.oh-my-zsh"
+export ZSH="${HOME}/.oh-my-zsh"
 export LANG=en_US.UTF-8
 
 ZSH_THEME="agnoster"
@@ -14,13 +17,14 @@ HYPHEN_INSENSITIVE="true"
 # Uncomment the following line to enable command auto-correction.
 ENABLE_CORRECTION="true"
 
-
 plugins=(   
             command-not-found
             docker
             docker-compose
             git
             golang
+            helm
+            kubectl
             # sudo
             thefuck
             vscode
@@ -31,7 +35,11 @@ plugins=(
             zsh-syntax-highlighting
 )
 
+# Sources / Auto-completions
 source $ZSH/oh-my-zsh.sh
+source <(kubectl completion zsh)
+source <(minikube completion zsh)
+source <(helm completion zsh)
 
 # Aliases
 alias zshconfig="mate ~/.zshrc"
