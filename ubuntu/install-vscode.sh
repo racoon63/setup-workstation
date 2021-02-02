@@ -2,7 +2,7 @@
 
 # TODO: Has to be written in an ansible playbook
 
-set -e
+set -ex
 
 
 curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg

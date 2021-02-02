@@ -19,7 +19,7 @@ and reboot your workstation when the provisioning is done. Have fun!
 
 ## Manually
 
-To prepare your freshly installed worksation with Ubuntu or you want to keep your workstation updated 
+To prepare your freshly installed worksation with Ubuntu or you want to keep your workstation updated
 in a specific state, then firstly run the `install-ansible.sh` script:
 
 ```bash
@@ -34,4 +34,3 @@ When this is done you can continue by running the `workstation.yaml`:
 ```bash
 ansible-playbook -i 'localhost,' workstation.yml --ask-become-pass 2>&1 | tee -a provision.log
 ```
-

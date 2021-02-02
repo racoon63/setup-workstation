@@ -235,14 +235,14 @@
 
     - name: Download go
       get_url:
-        url: https://golang.org/dl/go1.15.3.linux-amd64.tar.gz
-        dest: /tmp/go1.15.3.linux-amd64.tar.gz
+        url: https://golang.org/dl/go1.15.7.linux-amd64.tar.gz
+        dest: /tmp/go1.15.7.linux-amd64.tar.gz
         mode: 0440
 
     - name: Extract go archive into /usr/local
       become: yes
       unarchive:
-        src: /tmp/go1.15.3.linux-amd64.tar.gz
+        src: /tmp/go1.15.7.linux-amd64.tar.gz
         dest: /usr/local
         remote_src: yes
 
