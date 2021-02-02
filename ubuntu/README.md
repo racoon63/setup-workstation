@@ -9,7 +9,7 @@
 
 ## Quick installation
 
-If you just want to get started with your work run:
+If you just want to get started with your work, run:
 
 ```bash
 wget -q -O - https://raw.githubusercontent.com/racoon63/setup-workstation/master/ubuntu/install.sh | bash
@@ -19,8 +19,8 @@ and reboot your workstation when the provisioning is done. Have fun!
 
 ## Manually
 
-To prepare your freshly installed worksation with Ubuntu or you want to keep your workstation updated
-in a specific state, then firstly run the `install-ansible.sh` script:
+When you want to prepare your freshly installed workstation or if you want to keep your workstation
+updated in a particular state, then run the `install-ansible.sh` script:
 
 ```bash
 bash install-ansible.sh
@@ -28,8 +28,8 @@ bash install-ansible.sh
 ./install-ansible.sh
 ```
 
-Install vscode according to the instructions in the repository that is linked under [Useful links](#useful-links).
-When this is done you can continue by running the `workstation.yaml`:
+Afterwards install vscode according to the instructions in the repository that is linked under [Useful links](#useful-links).
+When this is done you can continue by running the `workstation.yaml` playbook:
 
 ```bash
 ansible-playbook -i 'localhost,' workstation.yml --ask-become-pass 2>&1 | tee -a provision.log
