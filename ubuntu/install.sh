@@ -21,7 +21,10 @@ pip3 install --user ansible
 export "PATH=$PATH:$HOME/.local/bin"
 
 # Clone respository
-git clone https://github.com/racoon63/setup-workstation.git /tmp/setup-workstation
+if [[ ! -d /tmp/setup-workstation ]]
+then
+    git clone --progress https://github.com/racoon63/setup-workstation.git /tmp/setup-workstation
+fi
 
 # Switch to workdir
 cd /tmp/setup-workstation/ubuntu
