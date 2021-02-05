@@ -31,3 +31,5 @@ cd /tmp/setup-workstation/ubuntu
 
 # Provision workstation
 ansible-playbook -i 'localhost,' workstation.yml --ask-become-pass 2>&1 | tee -a provision.log
+
+rm -rf /tmp/setup-workstation
