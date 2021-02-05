@@ -8,7 +8,7 @@ export GOPATH=$HOME/go
 export ZSH="${HOME}/.oh-my-zsh"
 export LANG=en_US.UTF-8
 
-# zshr theme
+# zsh theme
 ZSH_THEME="agnoster"
 
 # Uncomment the following line to use hyphen-insensitive completion.
@@ -26,7 +26,7 @@ plugins=(
             golang
             helm
             kubectl
-            # sudo
+            terraform
             thefuck
             vscode
             z
@@ -47,3 +47,4 @@ alias zshconfig="mate ~/.zshrc"
 alias ohmyzsh="mate ~/.oh-my-zsh"
 alias myip="curl http://ipecho.net/plain; echo"
 alias pip="pip3"
+alias python="python3"
