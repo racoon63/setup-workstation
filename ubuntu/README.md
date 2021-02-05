@@ -13,32 +13,29 @@ The following steps will be performed while provisioning your workstation:
 
 Installs the following packages and tools:
 
-* `python3`
-* `pip3`
-* `git`
 * `ansible`
 * `apt-transport-https`
 * `aptitude`
+* `code` (Visual Studio Code)
 * `curl`
+* `docker`
 * `git`
+* `go` (Version: 1.15.7)
+* `chrome` (Google Chrome)
+* `gcloud` (Google Cloud SDK)
+* `helm` (Version 3)
 * `htop`
 * `jq`
 * `keepass2`
+* `kubectl`
+* `minikube`
 * `mlocate`
+* `pip3`
+* `fonts-powerline` (Powerline Fonts)
+* `python3`
+* `terraform`
 * `vim`
 * `wget`
-* `code`
-* `Google Chrome`
-* `Google Cloud SDK`
-* `Terraform`
-* `zsh`
-* `kubectl`
-* `Docker`
-* `Helm v3`
-* `Minikube`
-* `Ansible`
-* `Go` (Version: 1.15.7)
-* `Powerline Fonts`
 * `zsh`
 
 Installs following Snaps:
