@@ -7,30 +7,58 @@
 * [powerline fonts](https://github.com/powerline/fonts)
 * [vscode](https://github.com/racoon63/vscode)
 
+## Overview
+
+The following steps will be performed while provisioning your workstation:
+
+Installs the following packages and tools:
+
+* `python3`
+* `pip3`
+* `git`
+* `ansible`
+* `apt-transport-https`
+* `aptitude`
+* `curl`
+* `git`
+* `htop`
+* `jq`
+* `keepass2`
+* `mlocate`
+* `vim`
+* `wget`
+* `code`
+* `Google Chrome`
+* `Google Cloud SDK`
+* `Terraform`
+* `zsh`
+* `kubectl`
+* `Docker`
+* `Helm v3`
+* `Minikube`
+* `Ansible`
+* `Go` (Version: 1.15.7)
+* `Powerline Fonts`
+* `zsh`
+
+Installs following Snaps:
+
+* Spotify
+
+Installs others:
+
+* oh-my-zsh plugins
+  * thefuck
+  * zsh-autosuggestions
+  * zsh-syntax-highlighting
+* MesloLGS NF fonts
+
 ## Quick installation
 
-If you just want to get started with your work, run:
+If you just want to get started with your work or update your workstation, run:
 
 ```bash
 wget -q -O - https://raw.githubusercontent.com/racoon63/setup-workstation/master/ubuntu/install.sh | bash
 ```
 
 and reboot your workstation when the provisioning is done. Have fun!
-
-## Manually
-
-When you want to prepare your freshly installed workstation or if you want to keep your workstation
-updated in a particular state, then run the `install-ansible.sh` script:
-
-```bash
-bash install-ansible.sh
-# or
-./install-ansible.sh
-```
-
-Afterwards install vscode according to the instructions in the repository that is linked under [Useful links](#useful-links).
-When this is done you can continue by running the `workstation.yaml` playbook:
-
-```bash
-ansible-playbook -i 'localhost,' workstation.yml --ask-become-pass 2>&1 | tee -a provision.log
-```
