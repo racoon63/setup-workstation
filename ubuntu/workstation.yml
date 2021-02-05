@@ -1,11 +1,14 @@
 # Usage:
 # ansible-playbook -i 'localhost,' workstation.yml --ask-become-pass 2>&1 | tee -a provision.log
 ---
-- name: Bootstrap workstation
+- name: Setup workstation
   gather_facts: yes
   connection: local
   hosts: 127.0.0.1
   tasks:
+
+    - set_fact:
+        ansible_python_interpreter: "/usr/bin/python3"
     
     - name: Install general packages
       become: yes
@@ -13,14 +16,39 @@
         state: present
         update_cache: yes
         name:
+          - apt-transport-https
           - aptitude
           - curl
           - git
+          - htop
           - jq
           - keepass2
           - mlocate
           - vim
           - wget
+
+# ================== Visual Studio Code ================== #
+
+    - name: Install Visual Studio Code repository key
+      become: yes
+      apt_key:
+        url: https://packages.microsoft.com/keys/microsoft.asc
+        state: present
+
+    - name: Add Visual Studio Code repository to sources list
+      become: yes
+      apt_repository:
+        repo: deb https://packages.microsoft.com/repos/code stable main
+        state: present
+        filename: vscode
+
+    - name: Install Visual Studio Code
+      become: yes
+      apt:
+        state: present
+        update_cache: yes
+        name:
+          - code
 
 # ================== Google Chrome ================== #
 
@@ -33,7 +61,7 @@
     - name: Add Google Chrome browser repository to sources list
       become: yes
       apt_repository:
-        repo: deb http://dl.google.com/linux/chrome/deb/ stable main
+        repo: deb https://dl.google.com/linux/chrome/deb/ stable main
         state: present
         filename: google-chrome
 
@@ -56,7 +84,7 @@
     - name: Add Google Cloud SDK repository to sources list
       become: yes
       apt_repository:
-        repo: deb http://packages.cloud.google.com/apt cloud-sdk main
+        repo: deb https://packages.cloud.google.com/apt cloud-sdk main
         state: present
         filename: google-cloud-sdk
 
@@ -176,7 +204,7 @@
       apt_repository:
         repo: deb https://apt.kubernetes.io/ kubernetes-xenial main
         state: present
-        filename: kubernetes.list
+        filename: kubernetes
 
     - name: Install kubectl
       become: yes
@@ -260,14 +288,6 @@
       apt_key:
         url: https://baltocdn.com/helm/signing.asc
         state: present
-
-    - name: Install secure apt transport
-      become: yes
-      apt:
-        state: present
-        update_cache: yes
-        name:
-          - apt-transport-https
 
     - name: Add helm repository to sources list
       become: yes
