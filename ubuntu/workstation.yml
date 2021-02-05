@@ -40,24 +40,28 @@
         url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
         dest: ~/.fonts/MesloLGS_NF_Regular.ttf
         mode: '0440'
+        force: yes
     
     - name: Download MesloLGS NF Regular Bold font
       get_url:
         url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
         dest: ~/.fonts/MesloLGS_NF_Regular_Bold.ttf
         mode: '0440'
+        force: yes
 
     - name: Download MesloLGS NF Regular Italic font
       get_url:
         url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
         dest: ~/.fonts/MesloLGS_NF_Regular_Italic.ttf
         mode: '0440'
+        force: yes
 
     - name: Download MesloLGS NF Regular Italic font
       get_url:
         url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
         dest: ~/.fonts/MesloLGS_NF_Regular_Bold_Italic.ttf
         mode: '0440'
+        force: yes
 
     - name: Update font cache
       shell: fc-cache -f -v
