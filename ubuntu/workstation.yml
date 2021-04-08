@@ -25,6 +25,7 @@
           - keepass2
           - mlocate
           - vim
+          - yakuake
           - wget
 
 # ================== Fonts ================== #
@@ -39,32 +40,89 @@
       get_url:
         url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Regular.ttf
         dest: ~/.fonts/MesloLGS_NF_Regular.ttf
-        mode: '0440'
+        mode: '0660'
         force: yes
     
     - name: Download MesloLGS NF Regular Bold font
       get_url:
         url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold.ttf
         dest: ~/.fonts/MesloLGS_NF_Regular_Bold.ttf
-        mode: '0440'
+        mode: '0660'
         force: yes
 
     - name: Download MesloLGS NF Regular Italic font
       get_url:
         url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Italic.ttf
         dest: ~/.fonts/MesloLGS_NF_Regular_Italic.ttf
-        mode: '0440'
+        mode: '0660'
         force: yes
 
     - name: Download MesloLGS NF Regular Italic font
       get_url:
         url: https://github.com/romkatv/powerlevel10k-media/raw/master/MesloLGS%20NF%20Bold%20Italic.ttf
         dest: ~/.fonts/MesloLGS_NF_Regular_Bold_Italic.ttf
-        mode: '0440'
+        mode: '0660'
         force: yes
 
     - name: Update font cache
       shell: fc-cache -f -v
+
+# ================== Powerline fonts for zsh (oh my zsh) ================== #
+
+    - name: Install Powerline Fonts
+      become: yes
+      apt:
+        state: present
+        update_cache: yes
+        name:
+          - fonts-powerline
+
+# ================== zsh (oh my zsh) ================== #
+
+    - name: Installing zsh
+      become: yes
+      apt: 
+        name: zsh
+        state: latest
+
+    - name: Cloning oh-my-zsh
+      git:
+        repo=https://github.com/robbyrussell/oh-my-zsh
+        dest=~/.oh-my-zsh
+
+    - name: Downloading ~/.zshrc
+      get_url:
+        url: https://raw.githubusercontent.com/racoon63/setup-workstation/master/zsh/.zshrc
+        dest: "/home/{{ ansible_user_id }}/.zshrc"
+        mode: 0644
+        force: yes
+
+    - name: Get zsh path
+      command: which zsh
+      register: zsh_path
+
+    - name: Set user shell
+      become: yes
+      user:
+        name: "{{ ansible_user_id }}"
+        shell: "{{ zsh_path.stdout }}"
+
+# ================== oh-my-zsh plugins ================== #
+
+    - name: Install thefuck
+      pip:
+        name: thefuck
+        state: present
+
+    - name: Install zsh-autosuggestions
+      git:
+        repo=https://github.com/zsh-users/zsh-autosuggestions
+        dest=~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
+
+    - name: Install zsh-syntax-highlighting
+      git:
+        repo=https://github.com/zsh-users/zsh-syntax-highlighting.git
+        dest=~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
 # ================== Visual Studio Code ================== #
 
@@ -94,6 +152,7 @@
         url: https://raw.githubusercontent.com/racoon63/vscode/master/install.sh
         dest: /tmp/vscode-setup.sh
         mode: '0770'
+        force: yes
 
     - name: Execute the vscode-setup.sh
       shell: /tmp/vscode-setup.sh
@@ -149,14 +208,40 @@
         name:
           - google-cloud-sdk
 
-# ================== Terraform ================== #
+# ================== Terragrunt ================== #
 
     - name: Install jmespath
       pip:
         name: jmespath
         state: present
         extra_args: --user
+
+    - name: Get latest Terragrunt version metadata
+      uri:
+        status_code: 200
+        url: https://api.github.com/repos/gruntwork-io/terragrunt/releases/latest
+      register: terragrunt_metadata
+
+    - name: Download Terragrunt
+      become: yes
+      get_url:
+        url: "{{ item.browser_download_url }}"
+        dest: /usr/local/bin/terragrunt
+        mode: '0771'
+        force: yes
+      loop: "{{ terragrunt_metadata.json.assets }}"
+      when: item.name == "terragrunt_linux_amd64"
+
+# ================== tfenv ================== #
     
+    - name: Install tfenv
+      git:
+        repo: "https://github.com/tfutils/tfenv.git"
+        dest: "~/.tfenv"
+        force: yes
+
+# ================== Terraform ================== #
+
     - name: Get latest terraform version
       uri:
         url: 'https://checkpoint-api.hashicorp.com/v1/check/terraform'
@@ -187,62 +272,6 @@
         owner: root
         group: root
         mode: '0755'
-
-# ================== zsh (oh my zsh) ================== #
-
-    - name: Installing zsh
-      become: yes
-      apt: 
-        name: zsh
-        state: latest
-
-    - name: Cloning oh-my-zsh
-      git:
-        repo=https://github.com/robbyrussell/oh-my-zsh
-        dest=~/.oh-my-zsh
-
-    - name: Downloading ~/.zshrc
-      get_url:
-        url: https://raw.githubusercontent.com/racoon63/setup-workstation/master/zsh/.zshrc
-        dest: "/home/{{ ansible_user_id }}/.zshrc"
-        mode: 0644
-
-    - name: Get zsh path
-      command: which zsh
-      register: zsh_path
-
-    - name: Set user shell
-      become: yes
-      user:
-        name: "{{ ansible_user_id }}"
-        shell: "{{ zsh_path.stdout }}"
-
-# ================== oh-my-zsh plugins ================== #
-
-    - name: Install thefuck
-      pip:
-        name: thefuck
-        state: present
-
-    - name: Install zsh-autosuggestions
-      git:
-        repo=https://github.com/zsh-users/zsh-autosuggestions
-        dest=~/.oh-my-zsh/custom/plugins/zsh-autosuggestions
-
-    - name: Install zsh-syntax-highlighting
-      git:
-        repo=https://github.com/zsh-users/zsh-syntax-highlighting.git
-        dest=~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
-
-# ================== Powerline fonts for zsh (oh my zsh) ================== #
-
-    - name: Install Powerline Fonts
-      become: yes
-      apt:
-        state: present
-        update_cache: yes
-        name:
-          - fonts-powerline
 
 # ================== kubectl ================== #
 
@@ -316,14 +345,14 @@
 
     - name: Download go
       get_url:
-        url: https://golang.org/dl/go1.15.7.linux-amd64.tar.gz
-        dest: /tmp/go1.15.7.linux-amd64.tar.gz
+        url: https://golang.org/dl/go1.16.3.linux-amd64.tar.gz
+        dest: /tmp/go1.16.3.linux-amd64.tar.gz
         mode: 0440
 
     - name: Extract go archive into /usr/local
       become: yes
       unarchive:
-        src: /tmp/go1.15.7.linux-amd64.tar.gz
+        src: /tmp/go1.16.3.linux-amd64.tar.gz
         dest: /usr/local
         remote_src: yes
 

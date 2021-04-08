@@ -2,6 +2,8 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/us
 
 # Exports
 export PATH=$PATH:/usr/local/go/bin
+export PATH=$PATH:$HOME/.tfenv/bin
+
 export GOPATH=$HOME/go
 
 # Path to your oh-my-zsh installation.
