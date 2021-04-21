@@ -24,6 +24,7 @@ plugins=(
             command-not-found
             docker
             docker-compose
+            gcloud
             git
             golang
             helm
